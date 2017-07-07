@@ -11,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "CLIENT_ID", '"SRIMOZ5QOJW0OHFW4MYDQH2C10CVDWHEMUPK4HV2AAWAA0LI"'
+        buildConfigField "String", "CLIENT_SECRET", '"J2UUVHSC5Z3BFEJYYMOAGEFA0SAJAMMVKLXSL5TCX5GPBJTU"'
+    }
+    dataBinding {
+        enabled = true
     }
     buildTypes {
         release {

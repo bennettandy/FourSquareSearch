@@ -1,5 +1,6 @@
 package uk.co.avsoftware.foursquaresearch;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,12 +11,10 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import uk.co.avsoftware.foursquaresearch.api.FoursquareApi;
 import uk.co.avsoftware.foursquaresearch.dagger.DaggerMainActivityComponent;
 import uk.co.avsoftware.foursquaresearch.dagger.MainActivityComponent;
 import uk.co.avsoftware.foursquaresearch.dagger.RetrofitComponent;
-import uk.co.avsoftware.foursquaresearch.model.VenueAPIResponse;
+import uk.co.avsoftware.foursquaresearch.databinding.ActivityMainBinding;
 import uk.co.avsoftware.foursquaresearch.model.Venue;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private CompositeDisposable disposable;
 
     @Inject
-    protected FoursquareApi mApi;
+    protected MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
         disposable = new CompositeDisposable();
 
-        setContentView(R.layout.activity_main);
-
         RetrofitComponent retrofitComponent = FoursquareApplication.getRetrofitComponent(this);
         MainActivityComponent mainComponent = DaggerMainActivityComponent.builder()
                 .retrofitComponent(retrofitComponent)
                 .build();
         mainComponent.inject(this);
 
-        Log.d(TAG, "Got api " + mApi);
+        // bind view model
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setViewModel(mViewModel);
     }
 
     @Override
@@ -51,10 +50,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void callApi(){
-        // TODO: refactor and remove requirements of client id and secret from this call
-        Observable<VenueAPIResponse> observable = mApi.searchVenues("shop", getString(R.string.client_id), getString(R.string.client_secret));
+        Observable<List<Venue>> observable = mViewModel.searchVenues("shop");
+                observable.subscribe(this::handleVenueList,
+                        throwable -> Log.e(TAG, "Failed", throwable), () -> Log.d(TAG, "Completed") );
+    }
 
-        disposable.add( observable.subscribeOn(Schedulers.io()).subscribe(response -> Log.d(TAG, "Response " + response.toString()), throwable -> Log.e(TAG, "Failed", throwable), () -> Log.d(TAG, "Completed")) );
+    private void handleVenueList(List<Venue> venues){
+        Log.d(TAG, "Got " + venues.size() + " venues");
+
+        mViewModel.message.set("Got " + venues.size() + " Venues");
     }
 
     @Override
