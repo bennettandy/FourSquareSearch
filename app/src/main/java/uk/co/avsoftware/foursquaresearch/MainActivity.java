@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import uk.co.avsoftware.foursquaresearch.dagger.DaggerMainActivityComponent;
 import uk.co.avsoftware.foursquaresearch.dagger.MainActivityComponent;
@@ -46,14 +45,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        callApi();
+        disposable.add( mViewModel.venues
+                .subscribe(this::handleVenueList));
     }
 
-    private void callApi(){
-        Observable<List<Venue>> observable = mViewModel.searchVenues("shop");
-                observable.subscribe(this::handleVenueList,
-                        throwable -> Log.e(TAG, "Failed", throwable), () -> Log.d(TAG, "Completed") );
-    }
+
 
     private void handleVenueList(List<Venue> venues){
         Log.d(TAG, "Got " + venues.size() + " venues");
@@ -64,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mViewModel.dispose();
         disposable.dispose();
     }
 }
