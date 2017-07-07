@@ -1,10 +1,10 @@
 package uk.co.avsoftware.foursquaresearch.dagger;
 
-import android.app.Application;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.File;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,11 +22,13 @@ import uk.co.avsoftware.foursquaresearch.model.gson.GeneratedTypeAdapterFactory;
 public class RetrofitModule {
 
     private String mBaseUrl;
+    private File mCacheDirectory;
 
     private static final int CACHE_SIZE = 10 * 1024 * 1024; // 10 MiB
 
-    public RetrofitModule(String baseUrl) {
+    public RetrofitModule(String baseUrl, File cacheDirectory) {
         this.mBaseUrl = baseUrl;
+        this.mCacheDirectory = cacheDirectory;
     }
 
     @Provides
@@ -40,8 +42,8 @@ public class RetrofitModule {
 
     @Provides
     @ApplicationScope
-    Cache provideOkHttpCache(Application application) {
-        return new Cache(application.getCacheDir(), CACHE_SIZE);
+    Cache provideOkHttpCache() {
+        return new Cache(mCacheDirectory, CACHE_SIZE);
     }
 
     @Provides

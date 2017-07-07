@@ -12,6 +12,6 @@ import uk.co.avsoftware.foursquaresearch.model.Venue;
  */
 
 public interface FoursquareApi {
-    @GET("venues/search")
+    @GET("v2/venues/search")
     public Observable<Venue> searchVenues(@Field("search") String searchTerm );
 }
