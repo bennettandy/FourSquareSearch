@@ -32,7 +32,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search"
+                android:text="@string/message_search"
                 android:enabled="@{viewModel.searchEnabled &amp; !viewModel.progress}"
                 android:onClick="@{() -> viewModel.searchVenues()}"/>
 

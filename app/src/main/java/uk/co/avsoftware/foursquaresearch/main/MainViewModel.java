@@ -53,7 +53,7 @@ public class MainViewModel {
     public void searchVenues() {
         disposable.add(mApi.searchVenuesNear(searchTerm.get(), BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disp -> { progress.set(true); message.set("Searching");})
+                .doOnSubscribe(disp -> { progress.set(true); message.set("Searching");}) // TODO: These label values need to come from resources without coupling VM to UI, need to expose flags
                 .doOnSuccess(venueAPIResponse -> progress.set(false))
                 .doOnError(throwable -> progress.set(false))
                 .observeOn(Schedulers.computation())
@@ -72,6 +72,7 @@ public class MainViewModel {
     }
 
     private void handleVenueError(Throwable t){
+        //TODO: again this should live in the Activity and come from a resource string, replace this with some kind of observable flag
         message.set("Something went wrong, please try again...");
     }
 

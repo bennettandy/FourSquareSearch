@@ -3,8 +3,8 @@ package uk.co.avsoftware.foursquaresearch.dagger;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
-import uk.co.avsoftware.foursquaresearch.main.MainViewModel;
 import uk.co.avsoftware.foursquaresearch.api.FoursquareApi;
+import uk.co.avsoftware.foursquaresearch.main.MainViewModel;
 
 /**
  * Created by andy on 07/07/2017.

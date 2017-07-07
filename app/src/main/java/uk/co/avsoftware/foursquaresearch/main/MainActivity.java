@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import java.util.List;
 
@@ -66,10 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void handleVenueList(List<Venue> venues){
-        Log.d(TAG, "Got " + venues.size() + " venues");
-
-        mViewModel.message.set("Got " + venues.size() + " Venues");
-
+        String message = getString(R.string.got_venues_message, venues.size());
+        mViewModel.message.set(message);
         viewAdapter.setVenues(venues);
     }
 
