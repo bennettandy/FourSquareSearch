@@ -1,7 +1,7 @@
 package uk.co.avsoftware.foursquaresearch.dagger;
 
 import dagger.Component;
-import uk.co.avsoftware.foursquaresearch.MainActivity;
+import uk.co.avsoftware.foursquaresearch.main.MainActivity;
 
 /**
  * Created by andy on 07/07/2017.

@@ -1,4 +1,4 @@
-package uk.co.avsoftware.foursquaresearch;
+package uk.co.avsoftware.foursquaresearch.main;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -9,6 +9,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
+import uk.co.avsoftware.foursquaresearch.BuildConfig;
 import uk.co.avsoftware.foursquaresearch.api.FoursquareApi;
 import uk.co.avsoftware.foursquaresearch.model.Venue;
 

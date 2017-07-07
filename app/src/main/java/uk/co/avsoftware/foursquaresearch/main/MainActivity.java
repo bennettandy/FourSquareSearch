@@ -1,15 +1,20 @@
-package uk.co.avsoftware.foursquaresearch;
+package uk.co.avsoftware.foursquaresearch.main;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import uk.co.avsoftware.foursquaresearch.FoursquareApplication;
+import uk.co.avsoftware.foursquaresearch.R;
 import uk.co.avsoftware.foursquaresearch.dagger.DaggerMainActivityComponent;
 import uk.co.avsoftware.foursquaresearch.dagger.MainActivityComponent;
 import uk.co.avsoftware.foursquaresearch.dagger.RetrofitComponent;
@@ -21,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private CompositeDisposable disposable;
+
+    private VenueViewAdapter viewAdapter;
 
     @Inject
     protected MainViewModel mViewModel;
@@ -40,12 +47,19 @@ public class MainActivity extends AppCompatActivity {
         // bind view model
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setViewModel(mViewModel);
+
+        // set up recycler view
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        viewAdapter = new VenueViewAdapter();
+        recyclerView.setAdapter(viewAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         disposable.add( mViewModel.venues
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleVenueList));
     }
 
@@ -55,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Got " + venues.size() + " venues");
 
         mViewModel.message.set("Got " + venues.size() + " Venues");
+
+        viewAdapter.setVenues(venues);
     }
 
     @Override
