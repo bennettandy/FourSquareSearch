@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import uk.co.avsoftware.foursquaresearch.R;
@@ -19,11 +20,11 @@ import uk.co.avsoftware.foursquaresearch.model.Venue;
 public class VenueViewAdapter extends RecyclerView.Adapter<VenueViewAdapter.VenueViewHolder>{
     private List<Venue> mVenues;
 
-    public VenueViewAdapter() {
-        this.mVenues = new ArrayList();
+    VenueViewAdapter() {
+        this.mVenues = new ArrayList<Venue>();
     }
 
-    public void setVenues(List<Venue> venues){
+    void setVenues(List<Venue> venues){
         mVenues = venues;
         notifyDataSetChanged();
     }
@@ -31,15 +32,15 @@ public class VenueViewAdapter extends RecyclerView.Adapter<VenueViewAdapter.Venu
     @Override
     public VenueViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.venue_card, null);
-        VenueViewHolder viewHolder = new VenueViewHolder(view);
-        return viewHolder;
+        return new VenueViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(VenueViewHolder venueViewHolder, int i) {
         Venue venue = mVenues.get(i);
         venueViewHolder.nameView.setText(venue.name());
-        venueViewHolder.idView.setText(venue.id());
+        venueViewHolder.idView.setText(venue.contact().toString());
+        venueViewHolder.addressView.setText(Arrays.toString(venue.location().formattedAddress().toArray()));
     }
 
     @Override
@@ -48,15 +49,17 @@ public class VenueViewAdapter extends RecyclerView.Adapter<VenueViewAdapter.Venu
     }
 
     class VenueViewHolder extends RecyclerView.ViewHolder {
-        protected TextView nameView;
-        protected TextView idView;
-        protected TextView urlView;
+         TextView nameView;
+         TextView idView;
+         TextView contactView;
+        TextView addressView;
 
-        public VenueViewHolder(View view) {
+        VenueViewHolder(View view) {
             super(view);
             this.nameView = (TextView) view.findViewById(R.id.name_view);
             this.idView = (TextView) view.findViewById(R.id.id_view);
-            this.urlView = (TextView) view.findViewById(R.id.url_view);
+            this.contactView = (TextView) view.findViewById(R.id.contact_view);
+            this.addressView = (TextView) view.findViewById(R.id.address_view);
         }
     }
 }

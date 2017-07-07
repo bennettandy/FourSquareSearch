@@ -20,12 +20,15 @@ import uk.co.avsoftware.foursquaresearch.dagger.RetrofitComponent;
 import uk.co.avsoftware.foursquaresearch.databinding.ActivityMainBinding;
 import uk.co.avsoftware.foursquaresearch.model.Venue;
 
+/**
+ * Main Activity for the app
+ * MainViewModel is injected via Dagger2
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
     private Disposable venueDisposable;
-
     private VenueViewAdapter viewAdapter;
 
     @Inject
@@ -35,17 +38,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        injectDependencies();
+        bindViewModel();
+        setUpRecyclerView();
+    }
+
+    private void injectDependencies() {
         RetrofitComponent retrofitComponent = FoursquareApplication.getRetrofitComponent(this);
         MainActivityComponent mainComponent = DaggerMainActivityComponent.builder()
                 .retrofitComponent(retrofitComponent)
                 .build();
         mainComponent.inject(this);
+    }
 
+    private void bindViewModel() {
         // bind view model
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setViewModel(mViewModel);
+    }
 
-        // set up recycler view
+    private void setUpRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         viewAdapter = new VenueViewAdapter();

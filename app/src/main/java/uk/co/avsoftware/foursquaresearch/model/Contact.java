@@ -6,8 +6,6 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import java.util.List;
-
 /**
  * Created by andy on 06/07/2017.
  *
@@ -15,16 +13,20 @@ import java.util.List;
  */
 
 @AutoValue
-public abstract class Location {
+public abstract class Contact {
 
-    public static TypeAdapter<Location> typeAdapter(Gson gson) {
-        return new AutoValue_Location.GsonTypeAdapter(gson);
+    public static TypeAdapter<Contact> typeAdapter(Gson gson) {
+        return new AutoValue_Contact.GsonTypeAdapter(gson);
     }
 
     @Nullable
-    public abstract String lat();
+    public abstract String twitter();
     @Nullable
-    public abstract String lng();
+    public abstract String instagram();
     @Nullable
-    public abstract List<String> formattedAddress();
+    public abstract String facebook();
+    @Nullable
+    public abstract String phone();
+    @Nullable
+    public abstract String formattedPhone();
 }

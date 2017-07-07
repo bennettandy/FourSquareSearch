@@ -14,12 +14,11 @@ import com.google.gson.TypeAdapter;
 public abstract class Venue {
 
     public static Venue create(String name, String id, String url) {
-        return new AutoValue_Venue(name, id, url, null);
+        return new AutoValue_Venue(name, id, url, null, null);
     }
 
     public static TypeAdapter<Venue> typeAdapter(Gson gson) {
         return new AutoValue_Venue.GsonTypeAdapter(gson);
-        // You can set custom default values
     }
 
     @Nullable
@@ -30,4 +29,6 @@ public abstract class Venue {
     public abstract String url();
     @Nullable
     public abstract Location location();
+    @Nullable
+    public abstract Contact contact();
 }
