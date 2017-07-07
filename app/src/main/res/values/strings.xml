@@ -2,5 +2,8 @@
     <string name="app_name">Foursquare Search</string>
 
     <string name="message_search">Search</string>
-    <string name="got_venues_message">God %1$d Venues</string>
+    <string name="got_venues_message">Got %1$d Venues</string>
+    <string name="enter_location">Please enter a location</string>
+    <string name="searching">Searching&#8230;</string>
+    <string name="search_error">"Something went wrong, please try again&#8230;"</string>
 </resources>

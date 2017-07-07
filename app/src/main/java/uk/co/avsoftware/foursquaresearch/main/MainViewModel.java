@@ -12,9 +12,11 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import uk.co.avsoftware.foursquaresearch.BuildConfig;
+import uk.co.avsoftware.foursquaresearch.R;
 import uk.co.avsoftware.foursquaresearch.api.FoursquareApi;
 import uk.co.avsoftware.foursquaresearch.model.Venue;
 import uk.co.avsoftware.foursquaresearch.model.VenueAPIResponse;
+import uk.co.avsoftware.foursquaresearch.resource.ResourceProvider;
 
 /**
  * Created by andy on 07/07/2017.
@@ -22,11 +24,12 @@ import uk.co.avsoftware.foursquaresearch.model.VenueAPIResponse;
 
 public class MainViewModel {
 
-    FoursquareApi mApi;
+    private FoursquareApi mApi;
+    private ResourceProvider mResourceProvider;
 
     private static final int MIN_SEARCH_LENGTH = 3;
 
-    public final ObservableField<String> message = new ObservableField<>("Please enter a location");
+    public final ObservableField<String> message = new ObservableField<>("");
 
     public final ObservableField<String> searchTerm = new ObservableField<>("");
 
@@ -38,8 +41,11 @@ public class MainViewModel {
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
-    public MainViewModel(FoursquareApi api) {
+    public MainViewModel(FoursquareApi api, ResourceProvider resourceProvider) {
         this.mApi = api;
+        this.mResourceProvider = resourceProvider;
+
+        message.set(mResourceProvider.getString(R.string.enter_location));
 
         searchTerm.addOnPropertyChangedCallback(new android.databinding.Observable.OnPropertyChangedCallback() {
             @Override
@@ -53,7 +59,7 @@ public class MainViewModel {
     public void searchVenues() {
         disposable.add(mApi.searchVenuesNear(searchTerm.get(), BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disp -> { progress.set(true); message.set("Searching");}) // TODO: These label values need to come from resources without coupling VM to UI, need to expose flags
+                .doOnSubscribe(disp -> { progress.set(true); message.set(mResourceProvider.getString(R.string.searching));})
                 .doOnSuccess(venueAPIResponse -> progress.set(false))
                 .doOnError(throwable -> progress.set(false))
                 .observeOn(Schedulers.computation())
@@ -72,11 +78,10 @@ public class MainViewModel {
     }
 
     private void handleVenueError(Throwable t){
-        //TODO: again this should live in the Activity and come from a resource string, replace this with some kind of observable flag
-        message.set("Something went wrong, please try again...");
+        message.set(mResourceProvider.getString(R.string.search_error));
     }
 
-    public void dispose() {
+    void dispose() {
         disposable.dispose();
     }
 }

@@ -5,6 +5,7 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 import uk.co.avsoftware.foursquaresearch.api.FoursquareApi;
 import uk.co.avsoftware.foursquaresearch.main.MainViewModel;
+import uk.co.avsoftware.foursquaresearch.resource.ResourceProvider;
 
 /**
  * Created by andy on 07/07/2017.
@@ -21,7 +22,7 @@ public class MainActivityModule {
 
     @Provides
     @ActivityScope
-    MainViewModel provideMainViewModel(FoursquareApi api){
-        return new MainViewModel(api);
+    MainViewModel provideMainViewModel(FoursquareApi api, ResourceProvider resourceProvider){
+        return new MainViewModel(api, resourceProvider);
     }
 }

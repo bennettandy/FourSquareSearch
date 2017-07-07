@@ -15,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import uk.co.avsoftware.foursquaresearch.model.gson.GeneratedTypeAdapterFactory;
+import uk.co.avsoftware.foursquaresearch.resource.ResourceProvider;
 
 /**
  * Created by andy on 07/07/2017.
@@ -25,12 +26,20 @@ public class RetrofitModule {
 
     private String mBaseUrl;
     private File mCacheDirectory;
+    private ResourceProvider resourceProvider;
 
     private static final int CACHE_SIZE = 10 * 1024 * 1024; // 10 MiB
 
-    public RetrofitModule(String baseUrl, File cacheDirectory) {
+    public RetrofitModule(String baseUrl, File cacheDirectory, ResourceProvider provider) {
         this.mBaseUrl = baseUrl;
         this.mCacheDirectory = cacheDirectory;
+        this.resourceProvider = provider;
+    }
+
+    @Provides
+    @ApplicationScope
+    ResourceProvider provideResourceProvider(){
+        return resourceProvider;
     }
 
     @Provides

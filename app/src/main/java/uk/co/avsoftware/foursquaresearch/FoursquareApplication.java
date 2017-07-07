@@ -6,6 +6,7 @@ import android.content.Context;
 import uk.co.avsoftware.foursquaresearch.dagger.DaggerRetrofitComponent;
 import uk.co.avsoftware.foursquaresearch.dagger.RetrofitComponent;
 import uk.co.avsoftware.foursquaresearch.dagger.RetrofitModule;
+import uk.co.avsoftware.foursquaresearch.resource.ResourceProviderImpl;
 
 /**
  * Created by andy on 07/07/2017.
@@ -22,7 +23,7 @@ public class FoursquareApplication extends Application {
         // create Application Scope Component
         mRetrofitComponent = DaggerRetrofitComponent.builder()
                 // list of modules that are part of this component need to be created here too
-                .retrofitModule(new RetrofitModule("https://api.foursquare.com", getCacheDir()))
+                .retrofitModule(new RetrofitModule("https://api.foursquare.com", getCacheDir(), new ResourceProviderImpl(this)))
                 .build();
     }
 

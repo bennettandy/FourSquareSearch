@@ -37,7 +37,7 @@ public class MainViewModelTest {
 
         when(apiService.searchVenuesNear(anyString(), anyString(), anyString())).thenReturn(Single.just(createTestResponse(false)));
 
-        MainViewModel vm = new MainViewModel(apiService);
+        MainViewModel vm = new MainViewModel(apiService, new DummyResourceProvider());
 
         TestObserver<List<Venue>> observer = new TestObserver<>();
 
@@ -69,7 +69,7 @@ public class MainViewModelTest {
 
         when(apiService.searchVenuesNear(anyString(), anyString(), anyString())).thenReturn(Single.just(createTestResponse(true)));
 
-        MainViewModel vm = new MainViewModel(apiService);
+        MainViewModel vm = new MainViewModel(apiService, new DummyResourceProvider());
 
         TestObserver<List<Venue>> observer = new TestObserver<>();
 

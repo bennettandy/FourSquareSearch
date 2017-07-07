@@ -11,7 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import uk.co.avsoftware.foursquaresearch.FoursquareApplication;
 import uk.co.avsoftware.foursquaresearch.R;
 import uk.co.avsoftware.foursquaresearch.dagger.DaggerMainActivityComponent;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private CompositeDisposable disposable;
+    private Disposable venueDisposable;
 
     private VenueViewAdapter viewAdapter;
 
@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        disposable = new CompositeDisposable();
 
         RetrofitComponent retrofitComponent = FoursquareApplication.getRetrofitComponent(this);
         MainActivityComponent mainComponent = DaggerMainActivityComponent.builder()
@@ -57,14 +55,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        disposable.add( mViewModel.venues
+        venueDisposable = mViewModel.venues
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::handleVenueList));
+                .subscribe(this::handleVenueList);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (venueDisposable!=null && !venueDisposable.isDisposed()){
+            venueDisposable.dispose();
+            venueDisposable = null;
+        }
+    }
 
-
-    private void handleVenueList(List<Venue> venues){
+    private void handleVenueList(List<Venue> venues) {
         String message = getString(R.string.got_venues_message, venues.size());
         mViewModel.message.set(message);
         viewAdapter.setVenues(venues);
@@ -74,6 +79,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mViewModel.dispose();
-        disposable.dispose();
     }
 }
