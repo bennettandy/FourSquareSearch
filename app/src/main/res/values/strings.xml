@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Foursquare Search</string>
+
+    <string name="client_id" translatable="false">SRIMOZ5QOJW0OHFW4MYDQH2C10CVDWHEMUPK4HV2AAWAA0LI</string>
+    <string name="client_secret" translatable="false">J2UUVHSC5Z3BFEJYYMOAGEFA0SAJAMMVKLXSL5TCX5GPBJTU</string>
 </resources>

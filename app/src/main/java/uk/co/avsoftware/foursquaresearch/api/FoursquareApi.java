@@ -1,8 +1,8 @@
 package uk.co.avsoftware.foursquaresearch.api;
 
 import io.reactivex.Observable;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import uk.co.avsoftware.foursquaresearch.model.Venue;
 
 /**
@@ -12,6 +12,6 @@ import uk.co.avsoftware.foursquaresearch.model.Venue;
  */
 
 public interface FoursquareApi {
-    @GET("v2/venues/search")
-    public Observable<Venue> searchVenues(@Field("search") String searchTerm );
+    @GET("/v2/venues/search?v=20130815&ll=40.7,-74")
+    public Observable<Venue> searchVenues(@Query("query") String searchTerm, @Query("client_id") String id, @Query("client_secret") String secret );
 }

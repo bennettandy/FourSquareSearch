@@ -1,5 +1,7 @@
 package uk.co.avsoftware.foursquaresearch.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -16,6 +18,8 @@ public abstract class Venue {
         // You can set custom default values
     }
 
-    abstract String name();
-    abstract String id();
+    @Nullable
+    public abstract String name();
+    @Nullable
+    public abstract String id();
 }

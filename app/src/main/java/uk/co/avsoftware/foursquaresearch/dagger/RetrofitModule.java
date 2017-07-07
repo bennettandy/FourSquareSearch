@@ -3,6 +3,7 @@ package uk.co.avsoftware.foursquaresearch.dagger;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.File;
 
@@ -10,6 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import uk.co.avsoftware.foursquaresearch.model.gson.GeneratedTypeAdapterFactory;
@@ -49,7 +51,11 @@ public class RetrofitModule {
     @Provides
     @ApplicationScope
     OkHttpClient provideOkHttpClient(Cache cache) {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addInterceptor(interceptor);
         builder.cache(cache);
         return builder.build();
     }
@@ -59,6 +65,7 @@ public class RetrofitModule {
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(mBaseUrl)
                 .client(okHttpClient)
                 .build();
