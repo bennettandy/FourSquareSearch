@@ -13,6 +13,10 @@ import java.util.List;
 @AutoValue
 public abstract class VenueList {
 
+    public static VenueList create(List<Venue> venues){
+        return new AutoValue_VenueList(venues);
+    }
+
     public static TypeAdapter<VenueList> typeAdapter(Gson gson) {
         return new AutoValue_VenueList.GsonTypeAdapter(gson);
     }

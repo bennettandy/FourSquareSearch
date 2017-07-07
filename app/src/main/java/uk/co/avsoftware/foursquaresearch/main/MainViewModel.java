@@ -3,15 +3,18 @@ package uk.co.avsoftware.foursquaresearch.main;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
+import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import uk.co.avsoftware.foursquaresearch.BuildConfig;
 import uk.co.avsoftware.foursquaresearch.api.FoursquareApi;
 import uk.co.avsoftware.foursquaresearch.model.Venue;
+import uk.co.avsoftware.foursquaresearch.model.VenueAPIResponse;
 
 /**
  * Created by andy on 07/07/2017.
@@ -51,19 +54,17 @@ public class MainViewModel {
         disposable.add(mApi.searchVenuesNear(searchTerm.get(), BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disp -> { progress.set(true); message.set("Searching");})
-                .doOnComplete(() -> progress.set(false))
+                .doOnSuccess(venueAPIResponse -> progress.set(false))
                 .doOnError(throwable -> progress.set(false))
                 .observeOn(Schedulers.computation())
-                .flatMap(venueAPIResponse -> {
-                    if (venueAPIResponse.response() != null) {
-//                        if (venueAPIResponse.isError()){
-//                            String errorMessage = venueAPIResponse.meta().error_detail();
-//                            message.set(errorMessage);
-//                            return Observable.error(new Exception(errorMessage));
-//                        }
-                        return Observable.just(venueAPIResponse.response().venues());
-                    } else {
-                        return Observable.empty();
+                .map(new Function<VenueAPIResponse, List<Venue>>() {
+                    @Override
+                    public List<Venue> apply(@NonNull VenueAPIResponse venueAPIResponse) throws Exception {
+                        if (venueAPIResponse.response() != null) {
+                            return venueAPIResponse.response().venues();
+                        } else {
+                            return Collections.emptyList();
+                        }
                     }
                 })
                 .subscribe(venues::onNext, this::handleVenueError));

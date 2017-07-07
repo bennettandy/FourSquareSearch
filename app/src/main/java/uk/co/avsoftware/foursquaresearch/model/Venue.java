@@ -13,6 +13,10 @@ import com.google.gson.TypeAdapter;
 @AutoValue
 public abstract class Venue {
 
+    public static Venue create(String name, String id, String url) {
+        return new AutoValue_Venue(name, id, url, null);
+    }
+
     public static TypeAdapter<Venue> typeAdapter(Gson gson) {
         return new AutoValue_Venue.GsonTypeAdapter(gson);
         // You can set custom default values

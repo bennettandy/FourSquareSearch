@@ -11,6 +11,10 @@ import com.google.gson.TypeAdapter;
 @AutoValue
 public abstract class VenueAPIResponse {
 
+    public static VenueAPIResponse create(MetaData meta, VenueList venueList){
+        return new AutoValue_VenueAPIResponse(meta, venueList);
+    }
+
     public static TypeAdapter<VenueAPIResponse> typeAdapter(Gson gson) {
         return new AutoValue_VenueAPIResponse.GsonTypeAdapter(gson);
     }
@@ -18,7 +22,4 @@ public abstract class VenueAPIResponse {
     public abstract MetaData meta();
     public abstract VenueList response();
 
-    public boolean isError(){
-        return !meta().code().equals("200");
-    }
 }

@@ -13,6 +13,9 @@ import com.google.gson.TypeAdapter;
 @AutoValue
 public abstract class MetaData {
 
+    public static MetaData create(String code, String requestId, String error_type, String error_detail){
+        return new AutoValue_MetaData(code, requestId, error_type, error_detail);
+    }
     public static TypeAdapter<MetaData> typeAdapter(Gson gson) {
         return new AutoValue_MetaData.GsonTypeAdapter(gson);
     }
