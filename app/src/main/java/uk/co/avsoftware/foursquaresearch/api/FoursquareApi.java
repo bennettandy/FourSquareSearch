@@ -12,6 +12,6 @@ import uk.co.avsoftware.foursquaresearch.model.VenueAPIResponse;
  */
 
 public interface FoursquareApi {
-    @GET("/v2/venues/search?v=20130815&ll=40.7,-74")
-    public Observable<VenueAPIResponse> searchVenues(@Query("query") String searchTerm, @Query("client_id") String id, @Query("client_secret") String secret );
+    @GET("/v2/venues/search?v=20130815")
+    public Observable<VenueAPIResponse> searchVenuesNear(@Query("near") String searchTerm, @Query("client_id") String id, @Query("client_secret") String secret );
 }

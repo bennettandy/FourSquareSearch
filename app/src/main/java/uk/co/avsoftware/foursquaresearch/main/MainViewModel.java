@@ -23,9 +23,9 @@ public class MainViewModel {
 
     private static final int MIN_SEARCH_LENGTH = 3;
 
-    public final ObservableField<String> message = new ObservableField<>("unset");
+    public final ObservableField<String> message = new ObservableField<>("Please enter a location");
 
-    public final ObservableField<String> searchTerm = new ObservableField<>("fish");
+    public final ObservableField<String> searchTerm = new ObservableField<>("");
 
     public final ObservableBoolean searchEnabled = new ObservableBoolean(false);
 
@@ -48,21 +48,30 @@ public class MainViewModel {
     }
 
     public void searchVenues() {
-        disposable.add(mApi.searchVenues(searchTerm.get(), BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
+        disposable.add(mApi.searchVenuesNear(searchTerm.get(), BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(disp -> progress.set(true))
+                .doOnSubscribe(disp -> { progress.set(true); message.set("Searching");})
                 .doOnComplete(() -> progress.set(false))
                 .doOnError(throwable -> progress.set(false))
                 .observeOn(Schedulers.computation())
                 .flatMap(venueAPIResponse -> {
                     if (venueAPIResponse.response() != null) {
+//                        if (venueAPIResponse.isError()){
+//                            String errorMessage = venueAPIResponse.meta().error_detail();
+//                            message.set(errorMessage);
+//                            return Observable.error(new Exception(errorMessage));
+//                        }
                         return Observable.just(venueAPIResponse.response().venues());
                     } else {
                         return Observable.empty();
                     }
                 })
-                .subscribe(venues::onNext));
+                .subscribe(venues::onNext, this::handleVenueError));
 
+    }
+
+    private void handleVenueError(Throwable t){
+        message.set("Something went wrong, please try again...");
     }
 
     public void dispose() {

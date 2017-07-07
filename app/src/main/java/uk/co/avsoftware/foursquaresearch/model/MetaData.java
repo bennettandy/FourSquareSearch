@@ -18,11 +18,11 @@ public abstract class MetaData {
     }
 
     @Nullable
-    abstract String code();
+    public abstract String code();
     @Nullable
     abstract String requestId();
     @Nullable
     abstract String error_type();
     @Nullable
-    abstract String error_detail();
+    public abstract String error_detail();
 }

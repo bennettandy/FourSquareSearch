@@ -26,22 +26,23 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.searchTerm}"/>
+                android:text="@={viewModel.searchTerm}"
+                android:enabled="@{!viewModel.progress}"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Search"
-                android:enabled="@{viewModel.searchEnabled}"
+                android:enabled="@{viewModel.searchEnabled &amp; !viewModel.progress}"
                 android:onClick="@{() -> viewModel.searchVenues()}"/>
 
         </LinearLayout>
 
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="@{viewModel.progress ? View.VISIBLE : View.INVISIBLE}"/>
+        <!--<ProgressBar-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:indeterminate="true"-->
+            <!--android:visibility="@{viewModel.progress ? View.VISIBLE : View.INVISIBLE}"/>-->
 
         <TextView
             android:layout_width="wrap_content"

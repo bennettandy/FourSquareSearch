@@ -50,12 +50,13 @@ public class VenueViewAdapter extends RecyclerView.Adapter<VenueViewAdapter.Venu
     class VenueViewHolder extends RecyclerView.ViewHolder {
         protected TextView nameView;
         protected TextView idView;
-
+        protected TextView urlView;
 
         public VenueViewHolder(View view) {
             super(view);
             this.nameView = (TextView) view.findViewById(R.id.name_view);
             this.idView = (TextView) view.findViewById(R.id.id_view);
+            this.urlView = (TextView) view.findViewById(R.id.url_view);
         }
     }
 }

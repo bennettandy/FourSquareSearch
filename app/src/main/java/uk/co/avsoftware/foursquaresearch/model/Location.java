@@ -11,19 +11,15 @@ import com.google.gson.TypeAdapter;
  */
 
 @AutoValue
-public abstract class Venue {
+public abstract class Location {
 
-    public static TypeAdapter<Venue> typeAdapter(Gson gson) {
-        return new AutoValue_Venue.GsonTypeAdapter(gson);
+    public static TypeAdapter<Location> typeAdapter(Gson gson) {
+        return new AutoValue_Location.GsonTypeAdapter(gson);
         // You can set custom default values
     }
 
     @Nullable
-    public abstract String name();
+    public abstract String lat();
     @Nullable
-    public abstract String id();
-    @Nullable
-    public abstract String url();
-    @Nullable
-    public abstract Location location();
+    public abstract String lng();
 }

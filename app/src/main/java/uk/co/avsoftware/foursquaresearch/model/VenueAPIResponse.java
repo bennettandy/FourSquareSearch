@@ -17,4 +17,8 @@ public abstract class VenueAPIResponse {
 
     public abstract MetaData meta();
     public abstract VenueList response();
+
+    public boolean isError(){
+        return !meta().code().equals("200");
+    }
 }
