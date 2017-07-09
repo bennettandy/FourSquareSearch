@@ -8,9 +8,7 @@ import com.google.gson.TypeAdapter;
 
 /**
  * Created by andy on 06/07/2017.
- *
- * This wasn't needed in the end, but does allow us to deal with location
- */
+ **/
 
 @AutoValue
 public abstract class Contact {

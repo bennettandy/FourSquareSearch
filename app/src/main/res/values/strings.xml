@@ -6,4 +6,8 @@
     <string name="enter_location">Please enter a location</string>
     <string name="searching">Searching&#8230;</string>
     <string name="search_error">"Something went wrong, please try again&#8230;"</string>
+    <string name="contact_twitter">"<p>Twitter: %1$s</p>"</string>
+    <string name="contact_instagram">"<p>Instagram: %1$s</p>"</string>
+    <string name="contact_facebook">"<p>Facebook: %1$s</p>"</string>
+    <string name="contact_phone">"<p>Phone: %1$s</p>"</string>
 </resources>

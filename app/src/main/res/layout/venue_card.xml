@@ -26,7 +26,6 @@
                 android:padding="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textColor="#444"
-                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -35,9 +34,8 @@
                 android:layout_height="wrap_content"
                 android:maxLines="3"
                 android:padding="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#444"
-                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -46,9 +44,8 @@
                 android:layout_height="wrap_content"
                 android:maxLines="3"
                 android:padding="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#444"
-                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -57,9 +54,8 @@
                 android:layout_height="wrap_content"
                 android:maxLines="3"
                 android:padding="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="#444"
-                android:textSize="18dp"
                 android:textStyle="bold" />
 
         </LinearLayout>
